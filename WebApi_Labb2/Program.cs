@@ -1,3 +1,4 @@
+using WebApi_Labb2.Extensions;
 
 namespace WebApi_Labb2
 {
@@ -8,6 +9,9 @@ namespace WebApi_Labb2
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            //Hope this works
+            builder.Services.AddBooksDbContext(builder.Configuration);
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
