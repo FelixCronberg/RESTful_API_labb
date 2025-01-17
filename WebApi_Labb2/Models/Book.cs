@@ -9,7 +9,7 @@ namespace WebApi_Labb2.Models
 		[Required]
 		public required string Title { get; set; }
 		public string? ISBN { get; set; }
-		public int? Rating { get; set; }
+		public decimal? Rating { get; set; }
 		public int? ReleaseYear { get; set; }
 		public bool Available { get; set; } = true;
 

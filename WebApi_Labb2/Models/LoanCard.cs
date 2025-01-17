@@ -13,8 +13,11 @@ namespace WebApi_Labb2.Models
 
 		//Nav prop
 		[Required]
-		public LoanCardOwner LoanCardOwner { get; set; } = null!;
-		public ICollection<Loan> Loans { get; set; } = [];
+		public required LoanCardOwner LoanCardOwner { get; set; }
+
+		//Returned loans should be removed from here, but the reference to the card should stay in the loan
+		//Check if this works later
+		public ICollection<Loan> ActiveLoans { get; set; } = [];
 
 
 	}

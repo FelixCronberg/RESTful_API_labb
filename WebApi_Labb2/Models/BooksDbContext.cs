@@ -19,7 +19,7 @@ namespace WebApi_Labb2.Models
 			//Add Cascade delete for BookAuthor Junc table, and ? maybe also on LoanCardOwner???
 
 			//Look into this, where is the modelBuilder coming from
-			base.OnModelCreating(modelBuilder);
+			//base.OnModelCreating(modelBuilder);
 		}
 	}
 }
