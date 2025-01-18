@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi_Labb2.Models;
 
@@ -11,9 +12,11 @@ using WebApi_Labb2.Models;
 namespace WebApi_Labb2.Migrations
 {
     [DbContext(typeof(BooksDbContext))]
-    partial class BooksDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250118161639_AddForeignKeyDefinitions+Constraints")]
+    partial class AddForeignKeyDefinitionsConstraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,7 +120,7 @@ namespace WebApi_Labb2.Migrations
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime?>("ReturnedDate")
-                        .HasColumnType("smalldatetime");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("LoanId");
 

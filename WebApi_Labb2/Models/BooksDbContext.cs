@@ -95,13 +95,16 @@ namespace WebApi_Labb2.Models
 
 			modelBuilder.Entity<Loan>()
 				.Property(l => l.LoanedDate).HasColumnType("smalldatetime");
+			modelBuilder.Entity<Loan>()
+				.Property(l => l.ReturnedDate).HasColumnType("smalldatetime");
 
 			#endregion
 
 
 			#region Check Constraints
 
-			//Book rating + releaseYear
+			//Book rating + releaseYear.
+			//Seems like you could make a constraint to check if a string matches ISBN pattern but I'm finding multiple ISBN Formats online so SKIP
 			modelBuilder.Entity<Book>()
 				.ToTable(t => t.HasCheckConstraint("CK_Book_Rating", "[Rating] > 0 AND [Rating] < 10"));
 			modelBuilder.Entity<Book>()
