@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace WebApi_Labb2.Models
 {
@@ -10,7 +11,8 @@ namespace WebApi_Labb2.Models
 		public required string LastName { get; set; }
 
 		//Nav
-		public required LoanCard LoanCard { get; set; }
+		[JsonIgnore]
+		public LoanCard? LoanCard { get; set; }
 
 	}
 }

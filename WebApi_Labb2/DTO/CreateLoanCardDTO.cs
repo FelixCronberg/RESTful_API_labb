@@ -5,8 +5,6 @@ namespace WebApi_Labb2.DTO
 {
 	public class CreateLoanCardDTO
 	{
-		public DateTime IssueDate { get; set; }
-
-		public required LoanCardOwner LoanCardOwner { get; set; }
+		public required int LoanCardOwnerId { get; set; }
 	}
 }

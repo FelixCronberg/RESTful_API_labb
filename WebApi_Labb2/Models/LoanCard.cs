@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace WebApi_Labb2.Models
 {
@@ -6,17 +7,15 @@ namespace WebApi_Labb2.Models
 	{
 		public int LoanCardId { get; set; }
 
-		[Required]
 		public DateOnly IssueDate { get; set; }
-		[Required]
 		public DateOnly ExpirationDate { get; set; }
 
 		//FK
 		public int LoanCardOwnerId { get; set; }
 
 		//Nav
-		[Required]
-		public required LoanCardOwner LoanCardOwner { get; set; }
+		[JsonIgnore]
+		public LoanCardOwner LoanCardOwner { get; set; } = null!;
 		//Returned loans should be removed from here, but the reference to the card should stay in the loan
 		//Check if this works later
 		public ICollection<Loan> ActiveLoans { get; set; } = [];

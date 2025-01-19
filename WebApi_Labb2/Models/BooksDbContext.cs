@@ -8,11 +8,11 @@ namespace WebApi_Labb2.Models
 		{
 		}
 
-		DbSet<Book> Books { get; set; }
-		DbSet<Author> Author { get; set; }
-		DbSet<LoanCard> LoanCard { get; set; }
-		DbSet<LoanCardOwner> LoanCardOwner { get; set; }
-		DbSet<Loan> Loan { get; set; }
+		public DbSet<Book> Books { get; set; }
+		public DbSet<Author> Author { get; set; }
+		public DbSet<LoanCard> LoanCard { get; set; }
+		public DbSet<LoanCardOwner> LoanCardOwner { get; set; }
+		public DbSet<Loan> Loan { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -120,14 +120,14 @@ namespace WebApi_Labb2.Models
 				.Property(b => b.IsAvailable).HasDefaultValue(true);
 
 			modelBuilder.Entity<Loan>()
-				.Property(l => l.LoanedDate).HasDefaultValueSql("GETDATE()");
+				.Property(l => l.LoanedDate).HasDefaultValueSql("GETDATE()").IsRequired();
 			modelBuilder.Entity<Loan>()
 				.Property(l => l.ReturnedDate).HasDefaultValue(null);
 
 			modelBuilder.Entity<LoanCard>()
-				.Property(l => l.IssueDate).HasDefaultValueSql("GETDATE()");
+				.Property(l => l.IssueDate).HasDefaultValueSql("GETDATE()").IsRequired();
 			modelBuilder.Entity<LoanCard>()
-				.Property(l => l.ExpirationDate).HasDefaultValueSql("DATEADD(YEAR, 5, GETDATE())");
+				.Property(l => l.ExpirationDate).HasDefaultValueSql("DATEADD(YEAR, 5, GETDATE())").IsRequired();
 
 			#endregion
 
