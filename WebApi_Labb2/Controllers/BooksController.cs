@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApi_Labb2.DTO;
 using WebApi_Labb2.Models;
+using WebApi_Labb2.Extensions;
+using WebApi_Labb2.Controllers.Request_Bodies;
 
 namespace WebApi_Labb2.Controllers
 {
@@ -22,23 +25,27 @@ namespace WebApi_Labb2.Controllers
 
         // GET: api/Books
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
+        public async Task<ActionResult<IEnumerable<BookDTO>>> GetBooks()
         {
-            return await _context.Books.ToListAsync();
-        }
+			return await _context.Books.Select(m => m.ToBookDTO()).ToListAsync();
+		}
 
-        // GET: api/Books/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Book>> GetBook(int id)
+		// GET: api/Books/5
+		[HttpGet("{id}")]
+        public async Task<ActionResult<BookDTO>> GetBook(int id)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await _context.Books.AsNoTracking()
+                .Include(b => b.Authors)
+                .FirstOrDefaultAsync(b => b.BookId == id);
 
             if (book == null)
             {
                 return NotFound();
             }
-
-            return book;
+            else
+            {
+				return book.ToBookDTO();
+			}
         }
 
         // PUT: api/Books/5
@@ -75,13 +82,46 @@ namespace WebApi_Labb2.Controllers
         // POST: api/Books
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Book>> PostBook(Book book)
+        public async Task<ActionResult<Book>> PostBook(CreateBookDTO bookDTO)
         {
+            var book = bookDTO.ToBook();
             _context.Books.Add(book);
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetBook", new { id = book.BookId }, book);
         }
+
+        [HttpPost("assign-authors")]
+        public async Task<ActionResult<Book>> AssignAuthorsToBook([FromBody] AssignAuthorsToBook assignAuthors)
+        {
+			var book = await _context.Books.FindAsync(assignAuthors.BookId);
+
+			if (book == null)
+			{
+				return NotFound();
+			}
+
+			var authors = await _context.Author.Where(a => assignAuthors.AuthorIds.Contains(a.AuthorId)).ToListAsync();
+
+			if (authors.Count() != assignAuthors.AuthorIds.Count())
+			{
+				return NotFound();
+			}
+
+            foreach(var author in authors)
+            {
+                if (!book.Authors.Contains(author))
+                {
+                    book.Authors.Add(author);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+
+		}
 
         // DELETE: api/Books/5
         [HttpDelete("{id}")]

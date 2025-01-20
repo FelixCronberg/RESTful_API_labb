@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using WebApi_Labb2.Models;
 
 namespace WebApi_Labb2.DTO
@@ -9,8 +10,6 @@ namespace WebApi_Labb2.DTO
 		public string? ISBN { get; set; }
 		public decimal? Rating { get; set; }
 		public int? ReleaseYear { get; set; }
-
-		public ICollection<Author> Authors { get; set; } = [];
 
 	}
 }

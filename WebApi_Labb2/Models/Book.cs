@@ -15,7 +15,7 @@ namespace WebApi_Labb2.Models
 
 		//Nav
 		public ICollection<Author> Authors { get; set; } = [];
-		public ICollection<Loan> Loans { get; set; } = [];
+		public ICollection<Loan> TimesLoaned { get; set; } = [];
 
 	}
 }

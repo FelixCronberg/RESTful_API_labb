@@ -42,7 +42,7 @@ namespace WebApi_Labb2.Models
 				.IsRequired();
 			modelBuilder.Entity<Loan>()
 				.HasOne(l => l.Book)
-				.WithMany(lc => lc.Loans)
+				.WithMany(lc => lc.TimesLoaned)
 				.HasForeignKey(l => l.BookId)
 				.OnDelete(DeleteBehavior.Cascade)
 				.IsRequired();
@@ -131,10 +131,7 @@ namespace WebApi_Labb2.Models
 
 			#endregion
 
-			//Should be configured in FK definitions with LoanCard and LoanCardOwner 1 to 1 (hopefully). But double check
-			//modelBuilder.Entity<LoanCard>()
-			//	.HasIndex(l => l.LoanCardOwner)
-			//	.IsUnique();
+			
 		}
 	}
 }

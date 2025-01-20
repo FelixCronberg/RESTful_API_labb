@@ -13,6 +13,29 @@ namespace WebApi_Labb2.Extensions
 				LastName = authorDTO.LastName
 			};
 		}
+		public static Book ToBook(this CreateBookDTO bookDTO)
+		{
+			return new Book
+			{
+				Title = bookDTO.Title,
+				ISBN = bookDTO.ISBN,
+				Rating = bookDTO.Rating,
+				ReleaseYear = bookDTO.ReleaseYear
+			};
+		}
+		public static BookDTO ToBookDTO(this Book book)
+		{
+			return new BookDTO
+			{
+				BookId = book.BookId,
+				Title = book.Title,
+				ISBN = book.ISBN,
+				Rating = book.Rating,
+				ReleaseYear = book.ReleaseYear,
+				IsAvailable = book.IsAvailable,
+				Authors = book.Authors
+			};
+		}
 
 
 
