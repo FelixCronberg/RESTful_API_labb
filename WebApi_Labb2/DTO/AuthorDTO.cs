@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using WebApi_Labb2.Models;
 
-namespace WebApi_Labb2.Models
+namespace WebApi_Labb2.DTO
 {
-	public class Author
+	public class AuthorDTO
 	{
 		public int AuthorId { get; set; }
 
@@ -11,7 +10,6 @@ namespace WebApi_Labb2.Models
 		public required string LastName { get; set; }
 
 		//Nav
-		[JsonIgnore]
 		public ICollection<Book> Books { get; set; } = [];
 
 	}

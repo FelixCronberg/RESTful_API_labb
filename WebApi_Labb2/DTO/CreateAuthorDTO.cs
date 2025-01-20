@@ -7,6 +7,5 @@ namespace WebApi_Labb2.DTO
 	{
 		public required string FirstName { get; set; }
 		public required string LastName { get; set; }
-		public ICollection<Book> Books { get; set; } = [];
 	}
 }

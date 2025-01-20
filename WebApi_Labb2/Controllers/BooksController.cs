@@ -27,14 +27,15 @@ namespace WebApi_Labb2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookDTO>>> GetBooks()
         {
-			return await _context.Books.Select(m => m.ToBookDTO()).ToListAsync();
+			return await _context.Books.AsNoTracking().Select(m => m.ToBookDTO()).ToListAsync();
 		}
 
 		// GET: api/Books/5
 		[HttpGet("{id}")]
         public async Task<ActionResult<BookDTO>> GetBook(int id)
         {
-            var book = await _context.Books.AsNoTracking()
+            var book = await _context.Books
+                .AsNoTracking()
                 .Include(b => b.Authors)
                 .FirstOrDefaultAsync(b => b.BookId == id);
 
@@ -47,6 +48,7 @@ namespace WebApi_Labb2.Controllers
 				return book.ToBookDTO();
 			}
         }
+
 
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -79,6 +81,7 @@ namespace WebApi_Labb2.Controllers
             return NoContent();
         }
 
+
         // POST: api/Books
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -104,7 +107,7 @@ namespace WebApi_Labb2.Controllers
 
 			var authors = await _context.Author.Where(a => assignAuthors.AuthorIds.Contains(a.AuthorId)).ToListAsync();
 
-			if (authors.Count() != assignAuthors.AuthorIds.Count())
+			if (authors.Count != assignAuthors.AuthorIds.Count)
 			{
 				return NotFound();
 			}
@@ -123,6 +126,7 @@ namespace WebApi_Labb2.Controllers
 
 		}
 
+
         // DELETE: api/Books/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
@@ -138,6 +142,8 @@ namespace WebApi_Labb2.Controllers
 
             return NoContent();
         }
+
+
 
         private bool BookExists(int id)
         {
