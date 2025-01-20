@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace WebApi_Labb2.Models
 {
@@ -14,9 +15,12 @@ namespace WebApi_Labb2.Models
 		public int LoanCardId { get; set; }
 
 		//Nav
-		public required Book Book { get; set; }
+		[JsonIgnore]
+		public Book Book { get; set; } = null!;
+
+		[JsonIgnore]
 		//Reference to loanCard should stay here but be removed from LoanCard ActiveLoans 
-		public required LoanCard LoanCard { get; set; }
+		public LoanCard LoanCard { get; set; } = null!;
 
 	}
 }

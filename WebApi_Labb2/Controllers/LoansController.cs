@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApi_Labb2.DTO;
+using WebApi_Labb2.Extensions;
 using WebApi_Labb2.Models;
 
 namespace WebApi_Labb2.Controllers
@@ -72,11 +74,57 @@ namespace WebApi_Labb2.Controllers
             return NoContent();
         }
 
-        // POST: api/Loans
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Loan>> PostLoan(Loan loan)
+		[HttpPut("return/{id}")]
+		public async Task<IActionResult> ReturnBook(int id)
+		{
+            var loan = await _context.Loan.FindAsync(id);
+
+			if (loan == null)
+			{
+				return NotFound(new { message = "Loan not found" } );
+			}
+
+            var book = await _context.Books.FindAsync(loan.BookId);
+
+            if(book == null)
+            {
+                return NotFound(new { message = "Book was not found" });
+            }
+
+            loan.ReturnedDate = DateTime.Now;
+            book.IsAvailable = true;
+
+            await _context.SaveChangesAsync();
+
+			return NoContent();
+		}
+
+
+		// POST: api/Loans
+		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+		[HttpPost]
+        public async Task<ActionResult<Loan>> PostLoan(CreateLoanDTO newLoan)
         {
+			if (!LoanCardExists(newLoan.LoanCardId))
+			{
+				return NotFound(new { message = "Loan card was not found" });
+			}
+
+			var loan = newLoan.ToLoan();
+			loan.LoanedDate = DateTime.Now;
+			loan.ReturnedDate = null;
+
+			var book = await _context.Books.FindAsync(newLoan.BookId);
+
+			if (book == null)
+			{
+				return NotFound(new { message = "Book was not found" });
+			}
+			else
+			{
+				book.IsAvailable = false;
+			}
+
             _context.Loan.Add(loan);
             await _context.SaveChangesAsync();
 
@@ -103,5 +151,9 @@ namespace WebApi_Labb2.Controllers
         {
             return _context.Loan.Any(e => e.LoanId == id);
         }
-    }
+		private bool LoanCardExists(int id)
+		{
+			return _context.LoanCard.Any(e => e.LoanCardId == id);
+		}
+	}
 }

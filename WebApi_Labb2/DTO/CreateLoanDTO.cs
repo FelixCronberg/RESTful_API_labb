@@ -5,7 +5,7 @@ namespace WebApi_Labb2.DTO
 {
 	public class CreateLoanDTO
 	{
-		public required Book Book { get; set; }
-		public required LoanCard LoanCard { get; set; }
+		public required int BookId { get; set; }
+		public required int LoanCardId { get; set; }
 	}
 }

@@ -48,7 +48,14 @@ namespace WebApi_Labb2.Extensions
 			};
 		}
 
-
+		public static Loan ToLoan(this CreateLoanDTO loanDTO)
+		{
+			return new Loan
+			{
+				BookId = loanDTO.BookId,
+				LoanCardId = loanDTO.LoanCardId,
+			};
+		}
 
 
 
