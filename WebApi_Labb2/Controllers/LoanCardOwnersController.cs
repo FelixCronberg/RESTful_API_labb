@@ -80,7 +80,17 @@ namespace WebApi_Labb2.Controllers
         public async Task<ActionResult<LoanCardOwner>> PostLoanCardOwner(CreateLoanCardOwnerDTO loanCardOwnerDTO)
         {
             var loanCardOwner = loanCardOwnerDTO.ToLoanCardOwner();
-            _context.LoanCardOwner.Add(loanCardOwner);
+
+			//Putting this here for easier testing, assignment only says to have a Post for LoanCardOwner (Låntagare)
+			loanCardOwner.LoanCard = new LoanCard
+			{
+				LoanCardOwnerId = loanCardOwner.LoanCardOwnerId,
+				IssueDate = DateOnly.FromDateTime(DateTime.Now),
+				ExpirationDate = DateOnly.FromDateTime(DateTime.Now.AddYears(5))
+			};
+
+
+			_context.LoanCardOwner.Add(loanCardOwner);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetLoanCardOwner", new { id = loanCardOwner.LoanCardOwnerId }, loanCardOwner);

@@ -94,10 +94,10 @@ namespace WebApi_Labb2.Controllers
             return CreatedAtAction("GetAuthor", new { id = author.AuthorId }, author);
         }
 
-		[HttpPost("assign-books")]
-		public async Task<ActionResult<Author>> AssignAuthorsToBook([FromBody] AssignBooksToAuthor assignBooks)
+		[HttpPut("{id}/assign-books")]
+		public async Task<ActionResult<Author>> AssignAuthorsToBook(int id, [FromBody] AssignBooksToAuthor assignBooks)
 		{
-			var author = await _context.Author.FindAsync(assignBooks.AuthorId);
+			var author = await _context.Author.FindAsync(id);
 
 			if (author == null)
 			{

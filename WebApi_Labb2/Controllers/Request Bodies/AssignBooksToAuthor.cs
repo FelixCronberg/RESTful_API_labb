@@ -2,7 +2,6 @@
 {
 	public class AssignBooksToAuthor
 	{
-		public int AuthorId { get; set; }
 		public List<int> BookIds { get; set; } = [];
 	}
 }
