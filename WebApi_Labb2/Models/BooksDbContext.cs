@@ -16,10 +16,7 @@ namespace WebApi_Labb2.Models
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			//Add Cascade delete for BookAuthor Junc table, and ? maybe also on LoanCardOwner???
-			//When making migration looked like On Cascade delete was default. But might as well add it just to try some fluent api
-
-			//Look into this, where is the modelBuilder coming from, what does it do
+			
 			base.OnModelCreating(modelBuilder);
 
 			#region ForeignKey definitions

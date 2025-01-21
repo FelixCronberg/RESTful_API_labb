@@ -19,7 +19,6 @@ namespace WebApi_Labb2.Models
 		public Book Book { get; set; } = null!;
 
 		[JsonIgnore]
-		//Reference to loanCard should stay here but be removed from LoanCard ActiveLoans 
 		public LoanCard LoanCard { get; set; } = null!;
 
 	}

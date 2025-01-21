@@ -12,7 +12,7 @@ namespace WebApi_Labb2
             // Add services to the container.
 
             //Hope this works
-            builder.Services.AddBooksDbContext(builder.Configuration);
+            builder.Services.AddBooksDbContextSSMS(builder.Configuration);
 
             builder.Services.AddControllers().AddJsonOptions(options =>
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
