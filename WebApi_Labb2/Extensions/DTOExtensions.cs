@@ -20,7 +20,7 @@ namespace WebApi_Labb2.Extensions
 				AuthorId = author.AuthorId,
 				FirstName = author.FirstName,
 				LastName = author.LastName,
-				Books = author.Books
+				Books = author.Books.Select(b => b.ToShortBookDTO()).ToList(),
 			};
 		}
 
@@ -45,6 +45,15 @@ namespace WebApi_Labb2.Extensions
 				ReleaseYear = book.ReleaseYear,
 				IsAvailable = book.IsAvailable,
 				Authors = book.Authors
+			};
+		}
+		public static ShortBookDTO ToShortBookDTO(this Book book)
+		{
+			return new ShortBookDTO
+			{
+				Title = book.Title,
+				BookID = book.BookId,
+				ReleaseYear = book.ReleaseYear
 			};
 		}
 

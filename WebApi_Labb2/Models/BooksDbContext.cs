@@ -36,7 +36,7 @@ namespace WebApi_Labb2.Models
 
 			modelBuilder.Entity<Loan>()
 				.HasOne(l => l.LoanCard)
-				.WithMany(lc => lc.ActiveLoans)
+				.WithMany(lc => lc.Loans)
 				.HasForeignKey(l => l.LoanCardId)
 				.OnDelete(DeleteBehavior.Cascade)
 				.IsRequired();

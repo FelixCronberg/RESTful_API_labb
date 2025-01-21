@@ -33,7 +33,7 @@ namespace WebApi_Labb2.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<LoanCard>> GetLoanCard(int id)
         {
-            var loanCard = await _context.LoanCard.FindAsync(id);
+            var loanCard = await _context.LoanCard.AsNoTracking().Include(lc => lc.Loans).FirstOrDefaultAsync(lc => lc.LoanCardId == id);
 
             if (loanCard == null)
             {

@@ -26,14 +26,14 @@ namespace WebApi_Labb2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Loan>>> GetLoan()
         {
-            return await _context.Loan.ToListAsync();
+            return await _context.Loan.AsNoTracking().ToListAsync();
         }
 
         // GET: api/Loans/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Loan>> GetLoan(int id)
         {
-            var loan = await _context.Loan.FindAsync(id);
+            var loan = await _context.Loan.AsNoTracking().FirstOrDefaultAsync(l => l.LoanId == id);
 
             if (loan == null)
             {
