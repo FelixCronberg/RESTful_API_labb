@@ -81,7 +81,9 @@ namespace WebApi_Labb2.Controllers
         {
             var loanCardOwner = loanCardOwnerDTO.ToLoanCardOwner();
 
-			//Putting this here for easier testing, assignment only says to have a Post for LoanCardOwner (Låntagare)
+
+            //Creates new LoanCard when Creating new user
+			//Putting this here for easier testing, assignment only says to have a Post for LoanCardOwner (Låntagare) so...
 			loanCardOwner.LoanCard = new LoanCard
 			{
 				LoanCardOwnerId = loanCardOwner.LoanCardOwnerId,

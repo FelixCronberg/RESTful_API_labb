@@ -82,22 +82,9 @@ namespace WebApi_Labb2.Controllers
         }
 
 
-        // POST: api/Books
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Book>> PostBook(CreateBookDTO bookDTO)
-        {
-            var book = bookDTO.ToBook();
-            _context.Book.Add(book);
-
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetBook", new { id = book.BookId }, book);
-        }
-
-        [HttpPut("{id}/assign-authors")]
+		[HttpPut("{id}/assign-authors")]
 		public async Task<ActionResult<Book>> AssignAuthorsToBook(int id, [FromBody] AssignAuthorsToBook assignAuthors)
-        {
+		{
 			var book = await _context.Book.FindAsync(id);
 
 			if (book == null)
@@ -112,20 +99,35 @@ namespace WebApi_Labb2.Controllers
 				return NotFound();
 			}
 
-            foreach(var author in authors)
-            {
-                if (!book.Authors.Contains(author))
-                {
-                    book.Authors.Add(author);
-                }
-            }
+			foreach (var author in authors)
+			{
+				if (!book.Authors.Contains(author))
+				{
+					book.Authors.Add(author);
+				}
+			}
 
-            await _context.SaveChangesAsync();
+			await _context.SaveChangesAsync();
 
-            return Ok();
+			return Ok();
 
 		}
 
+
+		// POST: api/Books
+		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+		[HttpPost]
+        public async Task<ActionResult<Book>> PostBook(CreateBookDTO bookDTO)
+        {
+            var book = bookDTO.ToBook();
+            _context.Book.Add(book);
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetBook", new { id = book.BookId }, book);
+        }
+
+        
 
         // DELETE: api/Books/5
         [HttpDelete("{id}")]
