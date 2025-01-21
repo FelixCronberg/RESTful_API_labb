@@ -27,14 +27,14 @@ namespace WebApi_Labb2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookDTO>>> GetBooks()
         {
-			return await _context.Books.AsNoTracking().Select(m => m.ToBookDTO()).ToListAsync();
+			return await _context.Book.AsNoTracking().Select(m => m.ToBookDTO()).ToListAsync();
 		}
 
 		// GET: api/Books/5
 		[HttpGet("{id}")]
         public async Task<ActionResult<BookDTO>> GetBook(int id)
         {
-            var book = await _context.Books
+            var book = await _context.Book
                 .AsNoTracking()
                 .Include(b => b.Authors)
                 .FirstOrDefaultAsync(b => b.BookId == id);
@@ -88,7 +88,7 @@ namespace WebApi_Labb2.Controllers
         public async Task<ActionResult<Book>> PostBook(CreateBookDTO bookDTO)
         {
             var book = bookDTO.ToBook();
-            _context.Books.Add(book);
+            _context.Book.Add(book);
 
             await _context.SaveChangesAsync();
 
@@ -98,7 +98,7 @@ namespace WebApi_Labb2.Controllers
         [HttpPost("assign-authors")]
         public async Task<ActionResult<Book>> AssignAuthorsToBook([FromBody] AssignAuthorsToBook assignAuthors)
         {
-			var book = await _context.Books.FindAsync(assignAuthors.BookId);
+			var book = await _context.Book.FindAsync(assignAuthors.BookId);
 
 			if (book == null)
 			{
@@ -131,13 +131,13 @@ namespace WebApi_Labb2.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await _context.Book.FindAsync(id);
             if (book == null)
             {
                 return NotFound();
             }
 
-            _context.Books.Remove(book);
+            _context.Book.Remove(book);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -147,7 +147,7 @@ namespace WebApi_Labb2.Controllers
 
         private bool BookExists(int id)
         {
-            return _context.Books.Any(e => e.BookId == id);
+            return _context.Book.Any(e => e.BookId == id);
         }
     }
 }

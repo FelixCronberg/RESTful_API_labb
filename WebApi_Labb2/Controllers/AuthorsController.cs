@@ -104,7 +104,7 @@ namespace WebApi_Labb2.Controllers
 				return NotFound();
 			}
 
-			var books = await _context.Books.Where(b => assignBooks.BookIds.Contains(b.BookId)).ToListAsync();
+			var books = await _context.Book.Where(b => assignBooks.BookIds.Contains(b.BookId)).ToListAsync();
 
 			if (books.Count != assignBooks.BookIds.Count)
 			{

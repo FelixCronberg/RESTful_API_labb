@@ -84,7 +84,7 @@ namespace WebApi_Labb2.Controllers
 				return NotFound(new { message = "Loan not found" } );
 			}
 
-            var book = await _context.Books.FindAsync(loan.BookId);
+            var book = await _context.Book.FindAsync(loan.BookId);
 
             if(book == null)
             {
@@ -114,7 +114,7 @@ namespace WebApi_Labb2.Controllers
 			loan.LoanedDate = DateTime.Now;
 			loan.ReturnedDate = null;
 
-			var book = await _context.Books.FindAsync(newLoan.BookId);
+			var book = await _context.Book.FindAsync(newLoan.BookId);
 
 			if (book == null)
 			{

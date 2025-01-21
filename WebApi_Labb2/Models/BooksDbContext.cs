@@ -8,7 +8,7 @@ namespace WebApi_Labb2.Models
 		{
 		}
 
-		public DbSet<Book> Books { get; set; }
+		public DbSet<Book> Book { get; set; }
 		public DbSet<Author> Author { get; set; }
 		public DbSet<LoanCard> LoanCard { get; set; }
 		public DbSet<LoanCardOwner> LoanCardOwner { get; set; }
