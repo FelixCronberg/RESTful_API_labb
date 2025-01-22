@@ -19,5 +19,12 @@ namespace WebApi_Labb2.Extensions
 
 			return servColl;
 		}
+		public static IServiceCollection AddBooksDbContextAzureSql(this IServiceCollection servColl, IConfiguration configuration)
+		{
+			servColl.AddDbContext<BooksDbContext>(opt =>
+			opt.UseSqlServer(configuration.GetConnectionString("BooksDb")));
+
+			return servColl;
+		}
 	}
 }
