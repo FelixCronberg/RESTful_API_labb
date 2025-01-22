@@ -1,5 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using System.Configuration;
+using System.Data;
 using System.Text.Json.Serialization;
 using WebApi_Labb2.Extensions;
+using WebApi_Labb2.Models;
 
 namespace WebApi_Labb2
 {
@@ -38,6 +43,6 @@ namespace WebApi_Labb2
             app.MapControllers();
 
             app.Run();
-        }
+		}
     }
 }

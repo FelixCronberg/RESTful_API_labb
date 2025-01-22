@@ -57,7 +57,7 @@ namespace WebApi_Labb2.Migrations
 
                     b.HasKey("AuthorId");
 
-                    b.ToTable("Author");
+                    b.ToTable("Author", (string)null);
                 });
 
             modelBuilder.Entity("WebApi_Labb2.Models.Book", b =>
@@ -89,7 +89,7 @@ namespace WebApi_Labb2.Migrations
 
                     b.HasKey("BookId");
 
-                    b.ToTable("Book", t =>
+                    b.ToTable("Book", null, t =>
                         {
                             t.HasCheckConstraint("CK_Book_Rating", "[Rating] > 0 AND [Rating] < 10");
 
@@ -125,7 +125,7 @@ namespace WebApi_Labb2.Migrations
 
                     b.HasIndex("LoanCardId");
 
-                    b.ToTable("Loan");
+                    b.ToTable("Loan", (string)null);
                 });
 
             modelBuilder.Entity("WebApi_Labb2.Models.LoanCard", b =>
@@ -154,7 +154,7 @@ namespace WebApi_Labb2.Migrations
                     b.HasIndex("LoanCardOwnerId")
                         .IsUnique();
 
-                    b.ToTable("LoanCard");
+                    b.ToTable("LoanCard", (string)null);
                 });
 
             modelBuilder.Entity("WebApi_Labb2.Models.LoanCardOwner", b =>
@@ -177,7 +177,7 @@ namespace WebApi_Labb2.Migrations
 
                     b.HasKey("LoanCardOwnerId");
 
-                    b.ToTable("LoanCardOwner");
+                    b.ToTable("LoanCardOwner", (string)null);
                 });
 
             modelBuilder.Entity("AuthorBook", b =>

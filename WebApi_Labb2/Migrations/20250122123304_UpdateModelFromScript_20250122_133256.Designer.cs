@@ -12,8 +12,8 @@ using WebApi_Labb2.Models;
 namespace WebApi_Labb2.Migrations
 {
     [DbContext(typeof(BooksDbContext))]
-    [Migration("20250117145513_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250122123304_UpdateModelFromScript_20250122_133256")]
+    partial class UpdateModelFromScript_20250122_133256
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,15 +27,15 @@ namespace WebApi_Labb2.Migrations
 
             modelBuilder.Entity("AuthorBook", b =>
                 {
-                    b.Property<int>("AuthorsAuthorId")
+                    b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BooksBookId")
+                    b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.HasKey("AuthorsAuthorId", "BooksBookId");
+                    b.HasKey("AuthorId", "BookId");
 
-                    b.HasIndex("BooksBookId");
+                    b.HasIndex("BookId");
 
                     b.ToTable("AuthorBook");
                 });
@@ -50,15 +50,17 @@ namespace WebApi_Labb2.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.HasKey("AuthorId");
 
-                    b.ToTable("Author");
+                    b.ToTable("Author", (string)null);
                 });
 
             modelBuilder.Entity("WebApi_Labb2.Models.Book", b =>
@@ -69,11 +71,13 @@ namespace WebApi_Labb2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookId"));
 
-                    b.Property<bool>("Available")
-                        .HasColumnType("bit");
-
                     b.Property<string>("ISBN")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAvailable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<decimal?>("Rating")
                         .HasColumnType("decimal(2,1)");
@@ -83,11 +87,17 @@ namespace WebApi_Labb2.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
 
                     b.HasKey("BookId");
 
-                    b.ToTable("Books");
+                    b.ToTable("Book", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_Book_Rating", "[Rating] > 0 AND [Rating] < 10");
+
+                            t.HasCheckConstraint("CK_Book_ReleaseYear", "[ReleaseYear] > 0 AND [ReleaseYear] < 2500");
+                        });
                 });
 
             modelBuilder.Entity("WebApi_Labb2.Models.Loan", b =>
@@ -104,11 +114,13 @@ namespace WebApi_Labb2.Migrations
                     b.Property<int>("LoanCardId")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly>("LoanedDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("LoanedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smalldatetime")
+                        .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<DateOnly?>("ReturnDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime?>("ReturnedDate")
+                        .HasColumnType("smalldatetime");
 
                     b.HasKey("LoanId");
 
@@ -116,7 +128,7 @@ namespace WebApi_Labb2.Migrations
 
                     b.HasIndex("LoanCardId");
 
-                    b.ToTable("Loan");
+                    b.ToTable("Loan", (string)null);
                 });
 
             modelBuilder.Entity("WebApi_Labb2.Models.LoanCard", b =>
@@ -127,20 +139,25 @@ namespace WebApi_Labb2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LoanCardId"));
 
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("ExpirationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("date")
+                        .HasDefaultValueSql("DATEADD(YEAR, 5, GETDATE())");
 
-                    b.Property<DateTime>("IssueDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("IssueDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("date")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<int>("LoanCardOwnerId")
                         .HasColumnType("int");
 
                     b.HasKey("LoanCardId");
 
-                    b.HasIndex("LoanCardOwnerId");
+                    b.HasIndex("LoanCardOwnerId")
+                        .IsUnique();
 
-                    b.ToTable("LoanCard");
+                    b.ToTable("LoanCard", (string)null);
                 });
 
             modelBuilder.Entity("WebApi_Labb2.Models.LoanCardOwner", b =>
@@ -153,28 +170,30 @@ namespace WebApi_Labb2.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.HasKey("LoanCardOwnerId");
 
-                    b.ToTable("LoanCardOwner");
+                    b.ToTable("LoanCardOwner", (string)null);
                 });
 
             modelBuilder.Entity("AuthorBook", b =>
                 {
                     b.HasOne("WebApi_Labb2.Models.Author", null)
                         .WithMany()
-                        .HasForeignKey("AuthorsAuthorId")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebApi_Labb2.Models.Book", null)
                         .WithMany()
-                        .HasForeignKey("BooksBookId")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -182,13 +201,13 @@ namespace WebApi_Labb2.Migrations
             modelBuilder.Entity("WebApi_Labb2.Models.Loan", b =>
                 {
                     b.HasOne("WebApi_Labb2.Models.Book", "Book")
-                        .WithMany()
+                        .WithMany("TimesLoaned")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebApi_Labb2.Models.LoanCard", "LoanCard")
-                        .WithMany("ActiveLoans")
+                        .WithMany("Loans")
                         .HasForeignKey("LoanCardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -201,17 +220,27 @@ namespace WebApi_Labb2.Migrations
             modelBuilder.Entity("WebApi_Labb2.Models.LoanCard", b =>
                 {
                     b.HasOne("WebApi_Labb2.Models.LoanCardOwner", "LoanCardOwner")
-                        .WithMany()
-                        .HasForeignKey("LoanCardOwnerId")
+                        .WithOne("LoanCard")
+                        .HasForeignKey("WebApi_Labb2.Models.LoanCard", "LoanCardOwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LoanCardOwner");
                 });
 
+            modelBuilder.Entity("WebApi_Labb2.Models.Book", b =>
+                {
+                    b.Navigation("TimesLoaned");
+                });
+
             modelBuilder.Entity("WebApi_Labb2.Models.LoanCard", b =>
                 {
-                    b.Navigation("ActiveLoans");
+                    b.Navigation("Loans");
+                });
+
+            modelBuilder.Entity("WebApi_Labb2.Models.LoanCardOwner", b =>
+                {
+                    b.Navigation("LoanCard");
                 });
 #pragma warning restore 612, 618
         }

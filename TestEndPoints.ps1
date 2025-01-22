@@ -358,7 +358,12 @@ $sqlResult = Invoke-Sqlcmd -ConnectionString $connectionString -Query "Select * 
 $sqlResult | Format-Table
 $sqlResult = Invoke-Sqlcmd -ConnectionString $connectionString -Query "Select * FROM Book"
 $sqlResult | Format-Table
+$sqlResult = Invoke-Sqlcmd -ConnectionString $connectionString -Query "Select * FROM AuthorBook"
+$sqlResult | Format-Table
+
 $sqlResult = Invoke-Sqlcmd -ConnectionString $connectionString -Query "Select * FROM LoanCardOwner"
+$sqlResult | Format-Table
+$sqlResult = Invoke-Sqlcmd -ConnectionString $connectionString -Query "Select * FROM LoanCard"
 $sqlResult | Format-Table
 $sqlResult = Invoke-Sqlcmd -ConnectionString $connectionString -Query "Select * FROM Loan"
 $sqlResult | Format-Table

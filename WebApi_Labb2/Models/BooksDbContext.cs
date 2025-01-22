@@ -19,8 +19,14 @@ namespace WebApi_Labb2.Models
 			
 			base.OnModelCreating(modelBuilder);
 
+			modelBuilder.Entity<Book>().ToTable("Book");
+			modelBuilder.Entity<Author>().ToTable("Author");
+			modelBuilder.Entity<LoanCard>().ToTable("LoanCard");
+			modelBuilder.Entity<LoanCardOwner>().ToTable("LoanCardOwner");
+			modelBuilder.Entity<Loan>().ToTable("Loan");
+
 			#region ForeignKey definitions
-			
+
 			//Making all FKs required for now see if need to change later
 			modelBuilder.Entity<Author>()
 				.HasMany(a => a.Books)
@@ -128,7 +134,10 @@ namespace WebApi_Labb2.Models
 
 			#endregion
 
+
 			
+
+
 		}
 	}
 }

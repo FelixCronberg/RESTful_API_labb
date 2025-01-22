@@ -5,7 +5,7 @@
 namespace WebApi_Labb2.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateBooksTableName : Migration
+    public partial class UpdateModelFromScript_20250122_134010 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
